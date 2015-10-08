@@ -588,7 +588,7 @@ function throttle(func, wait, options) {
         this.selBar.addClass('rz-draggable');
       }
     },
-    
+
     /**
      * Adds accessibility atributes
      *
@@ -961,7 +961,16 @@ function throttle(func, wait, options) {
      */
     getWidth: function(elem)
     {
-      var val = elem[0].getBoundingClientRect();
+      var val;
+      if(!elem[0].offsetHeight){
+        var clonnedNode = elem[0].cloneNode(true);
+        var clonnedElement = document.body.appendChild(clonnedNode);
+        clonnedElement.style.setProperty("display", "block", "important");
+        val = clonnedElement.getBoundingClientRect();
+        document.body.removeChild(clonnedElement);
+        return (val.right - val.left);
+      }
+      val = elem[0].getBoundingClientRect();
       elem.rzsw = val.right - val.left;
       return elem.rzsw;
     },
